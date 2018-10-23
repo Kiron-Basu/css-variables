@@ -27,9 +27,10 @@
       --blur: 10px;
     }
     img {
-      padding: var(--spacing);
-      background: var(--base);
       filter: blur(var(--blur));
+      background: var(--base);
+      padding: var(--spacing);
+
     }
     .hl {
       color: var(--base);
@@ -56,11 +57,14 @@
   <script>
     const inputs = document.querySelectorAll('.controls input');
     function handleUpdate() {
-      const suffix = this.dataset.sizing || '';
-      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-    }
+      const suffix = this.dataset.sizing || ''; // '' is for hex, which doesn't have a sizing data property so to avoid 'undeifined' we set to nothing or ''. This.dataset return an object of data attributes, in this case only sizing (or nothing) will be present
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix); //document = whole document (nested inside window object) and documentElement = whole html etc so setProperty sets (reassigns) CSS variables. template string used because of prefixed '--'?
+    };
     inputs.forEach(input => input.addEventListener('change', handleUpdate));
-    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+    inputs.forEach(function(input){
+      input.addEventListener('mousemove', handleUpdate); //written in ES5 to keep it fresh
+    });
+
   </script>
 
 
